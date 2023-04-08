@@ -11,4 +11,4 @@ arXiv论文一键直达有道翻译，免去来回复制
 
 **演示**
 
-![day23408163505.gif](https://i.postimg.cc/xTyFbj4f/day23408163505.gif)
+![](https://st.ai55.cc/img/202304081950866.gif)
