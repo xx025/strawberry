@@ -30,7 +30,7 @@
     newLink.style.color = "#8cbd18";
 
     // 设置 a 元素的文本内容
-    const linkText = document.createTextNode("🐉有道翻译");
+    const linkText = document.createTextNode("🐉一键翻译");
     newLink.appendChild(linkText);
 
     // 将 a 元素添加到新的 li 元素中
