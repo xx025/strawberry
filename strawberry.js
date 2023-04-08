@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         arXiv论文一键有道翻译
+// @name         arXiv论文一键翻译
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description  arXiv论文一键直达有道翻译，免去来回复制
+// @description  arXiv论文一键翻译，多个翻译接口，很方便，祝你学术步步高升！
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
 // @match        https://arxiv.org/abs/*
