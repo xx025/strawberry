@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         arXiv 一键有道翻译
+// @name         arXiv论文一键有道翻译
 // @namespace    http://tampermonkey.net/
 // @version      0.1
 // @description  arXiv论文一键直达有道翻译，免去来回复制
