@@ -1,4 +1,4 @@
-# arXiv论文一键翻译
+# 盘友社区自动回复
 
 盘友社区自动回复帖子，并自动删除内容，基于协议无痕无打打扰
 
@@ -18,3 +18,5 @@
 [GitHub:Issues 反馈](https://github.com/xx025/strawberry/issues)
 
 **演示**
+
+![202304141158553](https://st.ai55.cc/img/202304141158553.gif)
