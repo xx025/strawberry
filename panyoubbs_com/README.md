@@ -7,7 +7,7 @@
 
 **安装脚本**
 
-- [Greasy Fork: 盘友社区自动回复](https://greasyfork.org/zh-CN/scripts/)
+- [Greasy Fork: 盘友社区自动回复](https://greasyfork.org/zh-CN/scripts/463957)
 
   > 这是一个js 脚本，你需要脚本管理器(
   推荐[Edge:Tampermonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd))
