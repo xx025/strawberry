@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         arXiv论文一键翻译
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.1.1
 // @description  arXiv论文一键翻译，很方便，祝你学术步步高升！
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
@@ -17,6 +17,11 @@
 
     // 获取要在其后添加新元素的元素
     const list = document.querySelector(".full-text ul");
+
+
+    // 点击下载按钮，在新标签中打开
+    list.querySelector('.abs-button.download-pdf').target = '_blank'
+
 
     // 创建新的 li 元素
     const newLi = document.createElement("li");
