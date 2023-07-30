@@ -6,8 +6,6 @@
 推荐[Edge:Tampermonkey](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd))
 来使用它们
 
-[🧡赞赏作者](https://xx025.github.io/pages/zs/)
-
 ### 脚本目录
 
 - [arXiv论文一键翻译](arxiv_org/README.md)
