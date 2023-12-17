@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         盘友社区自动回复
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.2.1
 // @description  盘友社区自动回复帖子，并自动删除内容，基于协议无痕无打打扰
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
