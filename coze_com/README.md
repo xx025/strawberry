@@ -1,5 +1,9 @@
 # Beautiful Coze| Coze 聊天面板美化
 
+
+coze，让你免费白嫖GPT4 [Coze官网](https://coze.com/)
+
+
 [🧡赞赏作者](https://gist.github.com/xx025/63f9621e77d603c7ca7935e72a58f929)
 
 **安装脚本**
