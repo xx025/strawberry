@@ -3,7 +3,7 @@
 盘友社区自动回复帖子，并自动删除内容，基于协议无痕无打打扰
 
 
-[🧡赞赏作者](https://xx025.github.io/pages/zs/)
+[🧡赞赏作者](https://gist.github.com/xx025/63f9621e77d603c7ca7935e72a58f929)
 
 **安装脚本**
 

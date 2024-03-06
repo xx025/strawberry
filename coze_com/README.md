@@ -1,6 +1,6 @@
 # Beautiful Coze| Coze 聊天面板美化
 
-[🧡赞赏作者](https://xx025.github.io/pages/zs/)
+[🧡赞赏作者](https://gist.github.com/xx025/63f9621e77d603c7ca7935e72a58f929)
 
 **安装脚本**
 
@@ -19,3 +19,4 @@
 **演示**
 
 ![动画](https://github.com/xx025/strawberry/assets/71559822/d87c6306-1a04-4645-a837-59cdcf67d23c)
+
