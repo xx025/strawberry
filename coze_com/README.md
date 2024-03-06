@@ -18,5 +18,5 @@
 
 **演示**
 
-![动画](https://github.com/xx025/strawberry/assets/71559822/d87c6306-1a04-4645-a837-59cdcf67d23c)
+![动画](https://raw.githubusercontent.com/xx025/strawberry/main/coze_com/example.webp)
 
