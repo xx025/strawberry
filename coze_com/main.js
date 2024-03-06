@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Beautiful Coze| Coze 聊天面板美化
 // @namespace    http://tampermonkey.net/
-// @version      0.0.1
+// @version      0.0.2
 // @description   Coze 聊天面板美化
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
@@ -19,94 +19,144 @@ const randomClassName = generateRandomClassName();
 
 function main() {
     const switch_btn_svg_text = '<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 17H4M4 17L8 13M4 17L8 21M4 7H20M20 7L16 3M20 7L16 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    const expend_btn_svg_text = '<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 8L21 3M21 3H16M21 3V8M8 8L3 3M3 3L3 8M3 3L8 3M8 16L3 21M3 21H8M3 21L3 16M16 16L21 21M21 21V16M21 21H16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+    const unexpected_btn_svg_text = '<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 14H10M10 14V20M10 14L3 21M20 10H14M14 10V4M14 10L21 3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+
+
+    // 设置一个变量显示 prompt 栏 或者 plugin 栏
+    let is_prompt = true;
+    // 设置一个变量显示 unexpected_btn_div 元素
+    let is_expected = false;
+
+    function generate_img_element(svg_text) {
+        const v_img = document.createElement('img');
+        v_img.src = 'data:image/svg+xml;base64,' + btoa(svg_text);
+        v_img.width = 20;
+        v_img.height = 20;
+        return v_img
+    }
+
+    function generate_div_element(svg_text, class_names) {
+        const v_div = document.createElement('div');
+        v_div.appendChild(generate_img_element(svg_text))
+        v_div.style.cursor = 'pointer';
+        class_names.forEach(
+            (item) => {
+                v_div.classList.add(item);
+            }
+        )
+        return v_div
+    }
 
     // 获取panel 的三个孩子，他们分别是 提示栏 、插件栏、聊天栏
     const panel = document.querySelector(".sidesheet-container");
     const prompt = panel.children[0];
     const plugin = panel.children[1];
     const chat = panel.children[2];
-
-    //  设置prompt 和 plugin 的 占比 25% 和 75%
     prompt.style.width = '25vw';
     plugin.style.width = '25vw';
     chat.style.width = '75vw';
 
-    // 设置一个变量显示 prompt 栏 或者 plugin 栏
-    let is_prompt = true;
+
+    const dd_header = document.querySelector(".semi-spin-children").childNodes[0]
+
 
     // 获取 prompt 和 plugin 的 herder div
     const prompt_header = prompt.childNodes[0]
     const plugin_header = plugin.childNodes[0]
-
-    //根据 switch_btn 生成一个 div 元素 class name 为 switch_btn_div
-
-    //  通过原生js 创建一个 div 元素
-    const switch_btn_div = document.createElement('div');
-
-    // 设置switch_btn_div 的样式 鼠标为小手样式
-    switch_btn_div.style.cursor = 'pointer';
-    // 创建一个图片元素
-    const switch_btn = document.createElement('img');
-    // 设置图片的 src 属性
-    switch_btn.src = 'data:image/svg+xml;base64,' + btoa(switch_btn_svg_text);
-    // 设置 图片 高和宽都为 20px
-    switch_btn.width = 20;
-    switch_btn.height = 20;
-    // 将图片元素添加到 div 元素中
-    switch_btn_div.appendChild(switch_btn);
-    // 为 div 元素添加 class name
-    switch_btn_div.classList.add('switch_btn_div');
-    switch_btn_div.classList.add(randomClassName); //将作为监听元素的 class name
+    const chat_header = chat.childNodes[0]
 
 
-    // 将 div 元素添加到 prompt_header 中
+    const switch_btn_div = generate_div_element(switch_btn_svg_text, ['switch_btn_div', randomClassName]);
     prompt_header.appendChild(switch_btn_div);
-    // 将 div 元素添加到 plugin_header 中
     plugin_header.appendChild(switch_btn_div.cloneNode(true));
-    // 再次通过 class name 获取 switch_btn_div 元素，防止因为 cloneNode 导致的引用错误
-    const handel_switch_btn_div = document.querySelectorAll('.switch_btn_div');
 
-    function control_panel_view() {
-        // 如果 is_prompt 为 true 则将 prompt 隐藏，plugin 显示，否则将 prompt 显示，plugin 隐藏
-        if (is_prompt) {
-            prompt.style.display = 'block';
-            plugin.style.display = 'none';
-        } else {
-            prompt.style.display = 'none';
-            plugin.style.display = 'block';
+
+    const expend_btn_div = generate_div_element(expend_btn_svg_text, ['expend_btn_div', randomClassName, 'expend_btn']);
+    const unexpected_btn_div = generate_div_element(unexpected_btn_svg_text, [`unexpected_btn_div`, randomClassName, `expend_btn`]);
+
+    // 将unexpected_btn_div 隐藏
+    unexpected_btn_div.style.display = 'none';
+    chat_header.appendChild(expend_btn_div);
+    chat_header.appendChild(unexpected_btn_div);
+
+    function control_panel_view(handel_target = 'switch_btn') {
+        if (handel_target === 'switch_btn') {
+            if (is_prompt) {
+                prompt.style.display = 'block';
+                plugin.style.display = 'none';
+            } else {
+                prompt.style.display = 'none';
+                plugin.style.display = 'block';
+            }
+            is_prompt = !is_prompt;
+        } else if (handel_target === 'expend_btn') {
+            if (!is_expected) {
+                // 如果是展开状态，则隐藏展开按钮，显示收起按钮
+                unexpected_btn_div.style.display = 'block';
+                expend_btn_div.style.display = 'none';
+                dd_header.style.display = 'none';
+            } else {
+                unexpected_btn_div.style.display = 'none';
+                expend_btn_div.style.display = 'block';
+                dd_header.style.display = '';
+            }
+            // 将 is_expected 取反
+            is_expected = !is_expected;
         }
-        // 将 is_prompt 取反
-        is_prompt = !is_prompt;
+
     }
 
     // 初始化的时候也要调用一次
     control_panel_view();
+
+    const handel_switch_btn_div = document.querySelectorAll('.switch_btn_div');
     // 为 switch_btn_div 元素添加点击事件
     handel_switch_btn_div.forEach((item) => {
         item.addEventListener('click', function () {
-            control_panel_view();
+            control_panel_view('switch_btn');
+        });
+    });
+
+    // 为 expend_btn 元素添加点击事件
+    const handel_expend_btn_div = document.querySelectorAll('.expend_btn');
+    handel_expend_btn_div.forEach((item) => {
+        item.addEventListener('click', function () {
+            control_panel_view('expend_btn');
+            console.log('click')
         });
     });
 }
 
-//  创建一个定时器等待 panel 出现
 
-let timer = setInterval(function () {
-    //监听sidesheet-container是否出现
-    const container = document.querySelector(".sidesheet-container");
-    if (container) {
-        const insert_ok = document.querySelector(`.${randomClassName}`);
-        if (!insert_ok) {
-            try {
-                main()
-            } catch (e) {
-                console.log(e)
+const targetNode = document.body;// 选择要观察的目标节点
+
+const config = {attributes: true, childList: true, subtree: true};// 观察器的配置（需要观察哪些变动）
+// 当观察到变动时执行的回调函数
+const callback = function (mutationsList, observer) {    // 针对每一个变动进行处理
+    for (let mutation of mutationsList) {
+        if (mutation.type === 'childList') {            // 子节点变化
+            //监听sidesheet-container是否出现
+            const container = document.querySelector(".sidesheet-container");
+            if (container) {
+                const insert_ok = document.querySelector(`.${randomClassName}`);
+                if (!insert_ok) {
+                    try {
+                        main()
+                    } catch (e) {
+                        console.log(e)
+                    }
+                } else {
+                    console.log('already insert')
+                }
+            } else {
+                console.log('waiting for sidesheet-container')
             }
-        } else {
-            console.log('already insert')
         }
-    } else {
-        console.log('waiting for sidesheet-container')
     }
-}, 1000);
+};
+// 创建一个观察器实例并传入回调函数
+const observer = new MutationObserver(callback);
+// 以上述配置开始观察目标节点
+observer.observe(targetNode, config);
 
