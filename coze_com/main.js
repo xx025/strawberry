@@ -6,7 +6,8 @@
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
 // @match        https://www.coze.com/*
-// @icon         https://github.com/xx025/strawberry/assets/71559822/ca1d8156-972b-4d95-9e24-732c906e4335
+// @icon         https://mirror.ghproxy.com/https://raw.githubusercontent.com/xx025/strawberry/main/coze_com/icon.png
+// @supportURL   https://github.com/xx025/strawberry/issues
 // @grant        none
 // ==/UserScript==
 
