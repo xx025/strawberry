@@ -108,7 +108,7 @@ function main() {
     const chat_header = chat.childNodes[0]
 
     const plugin_content = plugin.childNodes[1]
-    plugin_content.style.height = "100%" //解决插件栏不能滚动的问题
+    plugin_content.style.height = "95%" //解决插件栏不能滚动的问题
 
     const switch_btn_div = generate_div_element(switch_btn_svg_text, ['switch_btn_div', randomClassName]);
     prompt_header.appendChild(switch_btn_div);
