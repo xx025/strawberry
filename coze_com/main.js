@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Beautiful Coze| Coze 聊天面板美化 |免费GPT4
 // @namespace    http://tampermonkey.net/
-// @version      0.0.5
+// @version      0.0.6
 // @description  👍👍👍👍问答可见区域变大，对使用者更友好，超级好用||️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
@@ -25,8 +25,6 @@ const style = document.createElement('style');
 style.type = 'text/css';
 style.innerHTML = beautify_scrollbar_css;
 document.getElementsByTagName('head').item(0).appendChild(style);
-
-
 
 
 // 设置一个变量显示 prompt 栏 或者 plugin 栏
@@ -108,6 +106,9 @@ function main() {
     const prompt_header = prompt.childNodes[0]
     const plugin_header = plugin.childNodes[0]
     const chat_header = chat.childNodes[0]
+
+    const plugin_content = plugin.childNodes[1]
+    plugin_content.style.height = "100%" //解决插件栏不能滚动的问题
 
     const switch_btn_div = generate_div_element(switch_btn_svg_text, ['switch_btn_div', randomClassName]);
     prompt_header.appendChild(switch_btn_div);
