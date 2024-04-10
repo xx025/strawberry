@@ -1,11 +1,13 @@
 // ==UserScript==
 // @name         盘友社区自动回复
 // @namespace    http://tampermonkey.net/
-// @version      0.2.1
+// @version      0.2.2
 // @description  盘友社区自动回复帖子，并自动删除内容，基于协议无痕无打打扰
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
 // @match        https://panyoubbs.xyz/thread/*
+// @match        https://panyoubbs.com/thread/*
+// @match        https://ali.pan123456789.com/thread/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=panyoubbs.com
 // @require      https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js
 // @run-at       document-idle
@@ -21,7 +23,7 @@ if (undefined !== $.cookie('think_uid')) {
 
     //检查是否是在帖子页面
     //通过url判断 https://www.panyoubbs.com/thread/*.html
-    if (document.location.href.search('https://panyoubbs.xyz/thread/') > -1) {
+    if (document.location.href.search('/thread/') > -1) {
         //检查当前帖子是否需要回复可见
         let jm = $('.jm')
         if (jm.length > 0) {
