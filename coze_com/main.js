@@ -58,8 +58,8 @@ const settings = {
 function generate_img_element(svg_text) {
     const v_img = document.createElement('img');
     v_img.src = 'data:image/svg+xml;base64,' + btoa(svg_text);
-    v_img.width = 20;
-    v_img.height = 20;
+    v_img.width = 16;
+    v_img.height = 16;
     return v_img
 }
 
@@ -67,6 +67,7 @@ function generate_img_element(svg_text) {
 function generate_div_element(svg_text, class_names) {
     const v_div = document.createElement('div');
     v_div.appendChild(generate_img_element(svg_text))
+    v_div.classList.add('semi-button', 'semi-button-primary', 'semi-button-size-small', 'semi-button-borderless', 'semi-button-with-icon', 'semi-button-with-icon-only')
     v_div.style.cursor = 'pointer';
     class_names.forEach(
         (item) => {
