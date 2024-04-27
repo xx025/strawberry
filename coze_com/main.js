@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Beautiful Coze| Coze 聊天面板美化 |免费GPT4
 // @namespace    http://tampermonkey.net/
-// @version      0.0.7.2
+// @version      0.0.7.3
 // @description  👍👍最新适配，超级好用||️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
@@ -58,8 +58,8 @@ const settings = {
 function generate_img_element(svg_text) {
     const v_img = document.createElement('img');
     v_img.src = 'data:image/svg+xml;base64,' + btoa(svg_text);
-    v_img.width = 20;
-    v_img.height = 20;
+    v_img.width = 16;
+    v_img.height = 16;
     return v_img
 }
 
@@ -67,6 +67,7 @@ function generate_img_element(svg_text) {
 function generate_div_element(svg_text, class_names) {
     const v_div = document.createElement('div');
     v_div.appendChild(generate_img_element(svg_text))
+    v_div.classList.add('semi-button', 'semi-button-primary', 'semi-button-size-small', 'semi-button-borderless', 'semi-button-with-icon', 'semi-button-with-icon-only')
     v_div.style.cursor = 'pointer';
     class_names.forEach(
         (item) => {
