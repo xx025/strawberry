@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Beautiful Coze| Coze 聊天面板美化 |免费GPT4
 // @namespace    http://tampermonkey.net/
-// @version      0.0.7
+// @version      0.0.7.1
 // @description  👍👍最新适配，超级好用||️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
@@ -104,44 +104,38 @@ function main() {
     const chat_box = chat.childNodes[1]
 
     // 为开发栏上方插入一个切换按钮
-    const dd_header =  dev_container.children[0].children[1]
-    const switch_btn_div = generate_div_element(switch_btn_svg_text, ['switch_btn_div', randomClassName]);
-    dd_header.appendChild(switch_btn_div);
-
-    const chat_header = chat.childNodes[0]
+    const dd_header = dev_container.children[0]
+    dd_header.children[0].style.display='none' // 隐藏title 标题
+    dd_header.children[1].appendChild(generate_div_element(switch_btn_svg_text, ['switch_btn_div', randomClassName]));
 
     prompt.children[0].style.height = '95%'
     skill.children[0].style.height = '95%'
 
-
-    const expend_btn_div = generate_div_element(expend_btn_svg_text, ['expend_btn_div', randomClassName, 'expend_btn']);
-    const unexpected_btn_div = generate_div_element(unexpected_btn_svg_text, [`unexpected_btn_div`, randomClassName, `expend_btn`]);
-
-    // 将unexpected_btn_div 隐藏
-    chat_header.appendChild(expend_btn_div);
-    chat_header.appendChild(unexpected_btn_div);
+    chat.childNodes[0].appendChild(generate_div_element(expend_btn_svg_text, ['expend_btn_div', randomClassName, 'expend_btn']));
+    chat.childNodes[0].appendChild(generate_div_element(unexpected_btn_svg_text, [`unexpected_btn_div`, randomClassName, `expend_btn`]));
 
 
     function render_ui(is_prompt, is_expected) {
+
+        console.log(dd_title)
+
+
         if (is_expected) {
             // 处于展开状态
             // 展示 prompt
-            unexpected_btn_div.style.display = 'block';
-            expend_btn_div.style.display = 'none';
-
+            generate_div_element(unexpected_btn_svg_text, [`unexpected_btn_div`, randomClassName, `expend_btn`]).style.display = 'block';
+            generate_div_element(expend_btn_svg_text, ['expend_btn_div', randomClassName, 'expend_btn']).style.display = 'none';
             dd_header.style.display = 'none';// 隐藏 dd_header
             prompt.style.display = 'none'; // 将 prompt 和 plugin 的显示都设置为 none
             skill.style.display = 'none';
-
             // 将 chat 的宽度设置为 100%
             chat.style.width = '100vw';
             chat.style.backgroundColor = 'white';
             chat_box.style.width = '50vw'
             chat_box.style.marginLeft = '25vw'
-
         } else {
-            unexpected_btn_div.style.display = 'none';
-            expend_btn_div.style.display = 'block';
+            generate_div_element(unexpected_btn_svg_text, [`unexpected_btn_div`, randomClassName, `expend_btn`]).style.display = 'none';
+            generate_div_element(expend_btn_svg_text, ['expend_btn_div', randomClassName, 'expend_btn']).style.display = 'block';
             chat.style.width = '75vw' // 将 chat 的宽度设置为 75%
             dd_header.style.display = ''; // 显示 dd_header
             chat_box.style.width = '' // 将 chat_box 的宽度设置为 ''
