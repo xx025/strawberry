@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Beautiful Coze| Coze 聊天面板美化 |免费GPT4
 // @namespace    http://tampermonkey.net/
-// @version      0.0.7.2
+// @version      0.0.7.3
 // @description  👍👍最新适配，超级好用||️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
@@ -163,7 +163,6 @@ function main() {
     handel_switch_btn_div.forEach((item) => {
 
         item.addEventListener('click', function () {
-            console.log(111)
             settings.is_prompt = !settings.is_prompt;
             render_ui(settings.is_prompt, settings.is_expected)
         });
