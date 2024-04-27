@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Beautiful Coze| Coze 聊天面板美化 |免费GPT4
 // @namespace    http://tampermonkey.net/
-// @version      0.0.7.3
+// @version      0.0.7.4
 // @description  👍👍最新适配，超级好用||️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
@@ -15,7 +15,7 @@
 // 几个按钮的 svg 文本
 const switch_btn_svg_text = '<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 17H4M4 17L8 13M4 17L8 21M4 7H20M20 7L16 3M20 7L16 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const expend_btn_svg_text = '<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 8L21 3M21 3H16M21 3V8M8 8L3 3M3 3L3 8M3 3L8 3M8 16L3 21M3 21H8M3 21L3 16M16 16L21 21M21 21V16M21 21H16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
-const unexpected_btn_svg_text = '<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 14H10M10 14V20M10 14L3 21M20 10H14M14 10V4M14 10L21 3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+const unexpand_btn_svg_text = '<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 14H10M10 14V20M10 14L3 21M20 10H14M14 10V4M14 10L21 3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
 
 // 美化滚动条的css 代码
 const beautify_scrollbar_css = '/* 滚动槽 */::-webkit-scrollbar {    width: 6px;    height: 6px;}::-webkit-scrollbar-track {    border-radius: 3px;    background: rgba(0,0,0,0.06);    -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.08);}/* 滚动条滑块 */::-webkit-scrollbar-thumb {    border-radius: 3px;    background: rgba(0,0,0,0.12);    -webkit-box-shadow: inset 0 0 10px rgba(0,0,0,0.2);}'
@@ -28,13 +28,13 @@ document.getElementsByTagName('head').item(0).appendChild(style);
 
 
 // 设置一个变量显示 prompt 栏 或者 plugin 栏
-// 设置一个变量显示 unexpected_btn_div 元素
+// 设置一个变量显示 unexpand_btn_div 元素
 // 定义一个对象来存储变量，并为这些变量设置setter和getter
 // 使用这个对象设置和获取变量
 // 设置变量时，它们的新值会存储到localStorage里面，下一次加载页面时，它们会从localStorage初始化。
 const settings = {
     _is_prompt: localStorage.getItem('is_prompt') === null ? true : localStorage.getItem('is_prompt') === 'true',
-    _is_expected: localStorage.getItem('is_expected') === null ? false : localStorage.getItem('is_expected') === 'true',
+    _is_expand: localStorage.getItem('is_expand') === null ? false : localStorage.getItem('is_expand') === 'true',
 
     get is_prompt() {
         return this._is_prompt;
@@ -44,13 +44,13 @@ const settings = {
         // 当变量改变时，将其存储到localStorage
         localStorage.setItem('is_prompt', value);
     },
-    get is_expected() {
-        return this._is_expected;
+    get is_expand() {
+        return this._is_expand;
     },
-    set is_expected(value) {
-        this._is_expected = value;
+    set is_expand(value) {
+        this._is_expand = value;
         // 当变量改变时，将其存储到localStorage
-        localStorage.setItem('is_expected', value);
+        localStorage.setItem('is_expand', value);
     }
 };
 
@@ -87,8 +87,9 @@ const randomClassName = generateRandomClassName();
 function main() {
 
 
-    const panel = document.querySelector(".sidesheet-container");
 
+    const top_header = document.querySelector('.semi-spin-children').children[0];
+    const panel = document.querySelector(".sidesheet-container");
 
     const dev_container = panel.children[0]
     const prompt = dev_container.children[1].children[0];
@@ -100,7 +101,6 @@ function main() {
     prompt.style.width = '25vw';
     skill.style.width = '25vw';
     chat.style.width = '75vw';
-
 
 
     const dd_header = dev_container.children[0]
@@ -116,19 +116,23 @@ function main() {
 
 
     //  全屏按钮
-    const exp_btn = generate_div_element(expend_btn_svg_text, ['expend_btn_div', randomClassName, 'expend_btn']);
-    const unexp_btn = generate_div_element(unexpected_btn_svg_text, [`unexpected_btn_div`, randomClassName, `expend_btn`]);
-    chat.children[0].appendChild(exp_btn);
-    chat.children[0].appendChild(unexp_btn);
+    const expand_btn = generate_div_element(expend_btn_svg_text, ['expend_btn_div', randomClassName, 'expend_btn']);
+    const un_expand_btn = generate_div_element(unexpand_btn_svg_text, [`unexpand_btn_div`, randomClassName, `expend_btn`]);
+    chat.children[0].appendChild(expand_btn);
+    chat.children[0].appendChild(un_expand_btn);
+    chat.children[0].children[0].style.display = 'none';
 
     // 聊天界面容器
     const chat_box = chat.childNodes[1]
-    function render_ui(is_prompt, is_expected) {
-        if (is_expected) {
+    function render_ui(is_prompt, is_expand) {
+        if (is_expand) {// 处于展开状态
+
+            // 处于收缩状态
+            top_header.style.display = 'none';// 隐藏 top_header
             // 处于展开状态
             // 展示 prompt
-            exp_btn.style.display = 'none';
-            unexp_btn.style.display = 'block';
+            expand_btn.style.display = 'none';
+            un_expand_btn.style.display = 'block';
 
             dd_header.style.display = 'none';// 隐藏 dd_header
             prompt.style.display = 'none'; // 将 prompt 和 plugin 的显示都设置为 none
@@ -139,9 +143,10 @@ function main() {
             chat_box.style.width = '50vw'
             chat_box.style.marginLeft = '25vw'
         } else {
+            top_header.style.display = '';// 显示 top_header, 不可为 block
+            expand_btn.style.display = 'block';
+            un_expand_btn.style.display = 'none';
 
-            exp_btn.style.display = 'block';
-            unexp_btn.style.display = 'none';
             chat.style.width = '75vw' // 将 chat 的宽度设置为 75%
             dd_header.style.display = ''; // 显示 dd_header
             chat_box.style.width = '' // 将 chat_box 的宽度设置为 ''
@@ -157,7 +162,7 @@ function main() {
     }
 
     // 初始化的时候也要调用一次
-    render_ui(settings.is_prompt, settings.is_expected)
+    render_ui(settings.is_prompt, settings.is_expand)
 
     const handel_switch_btn_div = document.querySelectorAll('.switch_btn_div');
     // 为 switch_btn_div 元素添加点击事件
@@ -165,15 +170,15 @@ function main() {
 
         item.addEventListener('click', function () {
             settings.is_prompt = !settings.is_prompt;
-            render_ui(settings.is_prompt, settings.is_expected)
+            render_ui(settings.is_prompt, settings.is_expand)
         });
     });
     // 为 expend_btn 元素添加点击事件
     const handel_expend_btn_div = document.querySelectorAll('.expend_btn');
     handel_expend_btn_div.forEach((item) => {
         item.addEventListener('click', function () {
-            settings.is_expected = !settings.is_expected;
-            render_ui(settings.is_prompt, settings.is_expected)
+            settings.is_expand = !settings.is_expand;
+            render_ui(settings.is_prompt, settings.is_expand)
         });
     });
 }
