@@ -116,10 +116,6 @@ function main() {
 
 
     function render_ui(is_prompt, is_expected) {
-
-        console.log(dd_title)
-
-
         if (is_expected) {
             // 处于展开状态
             // 展示 prompt
@@ -156,7 +152,9 @@ function main() {
     const handel_switch_btn_div = document.querySelectorAll('.switch_btn_div');
     // 为 switch_btn_div 元素添加点击事件
     handel_switch_btn_div.forEach((item) => {
+
         item.addEventListener('click', function () {
+            console.log(111)
             settings.is_prompt = !settings.is_prompt;
             render_ui(settings.is_prompt, settings.is_expected)
         });
