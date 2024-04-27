@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Beautiful Coze| Coze 聊天面板美化 |免费GPT4
 // @namespace    http://tampermonkey.net/
-// @version      0.0.6
-// @description  👍👍👍👍问答可见区域变大，对使用者更友好，超级好用||️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
+// @version      0.0.7
+// @description  👍👍最新适配，超级好用||️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
 // @match        https://www.coze.com/*
@@ -85,34 +85,33 @@ const randomClassName = generateRandomClassName();
 
 function main() {
 
-    // 获取panel 的三个孩子，他们分别是 提示栏 、插件栏、聊天栏
+
     const panel = document.querySelector(".sidesheet-container");
-    const prompt = panel.children[0];
-    const plugin = panel.children[1];
-    const chat = panel.children[2];
+
+
+    const dev_container = panel.children[0]
+    const prompt = dev_container.children[1].children[0];
+    const skill = dev_container.children[1].children[1];
+
+    const chat = panel.children[1];
 
 
     prompt.style.width = '25vw';
-    plugin.style.width = '25vw';
+    skill.style.width = '25vw';
     chat.style.width = '75vw';
 
-
+    // 聊天界面容器
     const chat_box = chat.childNodes[1]
 
-    const dd_header = document.querySelector(".semi-spin-children").childNodes[0]
+    // 为开发栏上方插入一个切换按钮
+    const dd_header =  dev_container.children[0].children[1]
+    const switch_btn_div = generate_div_element(switch_btn_svg_text, ['switch_btn_div', randomClassName]);
+    dd_header.appendChild(switch_btn_div);
 
-
-    // 获取 prompt 和 plugin 的 herder div
-    const prompt_header = prompt.childNodes[0]
-    const plugin_header = plugin.childNodes[0]
     const chat_header = chat.childNodes[0]
 
-    const plugin_content = plugin.childNodes[1]
-    plugin_content.style.height = "95%" //解决插件栏不能滚动的问题
-
-    const switch_btn_div = generate_div_element(switch_btn_svg_text, ['switch_btn_div', randomClassName]);
-    prompt_header.appendChild(switch_btn_div);
-    plugin_header.appendChild(switch_btn_div.cloneNode(true));
+    prompt.children[0].style.height = '95%'
+    skill.children[0].style.height = '95%'
 
 
     const expend_btn_div = generate_div_element(expend_btn_svg_text, ['expend_btn_div', randomClassName, 'expend_btn']);
@@ -132,7 +131,7 @@ function main() {
 
             dd_header.style.display = 'none';// 隐藏 dd_header
             prompt.style.display = 'none'; // 将 prompt 和 plugin 的显示都设置为 none
-            plugin.style.display = 'none';
+            skill.style.display = 'none';
 
             // 将 chat 的宽度设置为 100%
             chat.style.width = '100vw';
@@ -149,10 +148,10 @@ function main() {
             chat_box.style.marginLeft = '' // 将 chat_box 的 marginLeft 设置为 ''
             if (is_prompt) {
                 prompt.style.display = 'block';
-                plugin.style.display = 'none';
+                skill.style.display = 'none';
             } else {
                 prompt.style.display = 'none';
-                plugin.style.display = 'block';
+                skill.style.display = 'block';
             }
         }
     }
