@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Beautiful Coze| Coze 聊天面板美化 |免费GPT4
 // @namespace    http://tampermonkey.net/
-// @version      0.0.7.4
+// @version      0.0.8
 // @description  👍👍最新适配，超级好用||️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
@@ -69,11 +69,9 @@ function generate_div_element(svg_text, class_names) {
     v_div.appendChild(generate_img_element(svg_text))
     v_div.classList.add('semi-button', 'semi-button-primary', 'semi-button-size-small', 'semi-button-borderless', 'semi-button-with-icon', 'semi-button-with-icon-only')
     v_div.style.cursor = 'pointer';
-    class_names.forEach(
-        (item) => {
-            v_div.classList.add(item);
-        }
-    )
+    class_names.forEach((item) => {
+        v_div.classList.add(item);
+    })
     return v_div
 }
 
@@ -85,8 +83,6 @@ function generateRandomClassName() {
 const randomClassName = generateRandomClassName();
 
 function main() {
-
-
 
     const top_header = document.querySelector('.semi-spin-children').children[0];
     const panel = document.querySelector(".sidesheet-container");
@@ -104,11 +100,11 @@ function main() {
 
 
     const dd_header = dev_container.children[0]
-    dd_header.children[0].style.display='none' // 隐藏title 标题
+    dd_header.children[0].style.display = 'none' // 隐藏title 标题
     // 为开发栏上方插入一个切换按钮
 
-    const switch_btn=generate_div_element(switch_btn_svg_text, ['switch_btn_div', randomClassName]);
-    switch_btn.style.marginLeft= '10px';
+    const switch_btn = generate_div_element(switch_btn_svg_text, ['switch_btn_div', randomClassName]);
+    switch_btn.style.marginLeft = '10px';
     dd_header.children[1].appendChild(switch_btn);
 
     prompt.children[0].style.height = '95%'
@@ -118,12 +114,15 @@ function main() {
     //  全屏按钮
     const expand_btn = generate_div_element(expend_btn_svg_text, ['expend_btn_div', randomClassName, 'expend_btn']);
     const un_expand_btn = generate_div_element(unexpand_btn_svg_text, [`unexpand_btn_div`, randomClassName, `expend_btn`]);
-    chat.children[0].appendChild(expand_btn);
-    chat.children[0].appendChild(un_expand_btn);
-    chat.children[0].children[0].style.display = 'none';
+
+    const chat_header = chat.children[0].children[0].children[0];
+    chat_header.children[0].textContent = '';// 隐藏 chat_header 的第一个元素
+    chat_header.appendChild(expand_btn);
+    chat_header.appendChild(un_expand_btn);
 
     // 聊天界面容器
-    const chat_box = chat.childNodes[1]
+    const chat_box = chat.children[0]
+
     function render_ui(is_prompt, is_expand) {
         if (is_expand) {// 处于展开状态
 
@@ -140,6 +139,7 @@ function main() {
             // 将 chat 的宽度设置为 100%
             chat.style.width = '100vw';
             chat.style.backgroundColor = 'white';
+            console.log(chat_box)
             chat_box.style.width = '50vw'
             chat_box.style.marginLeft = '25vw'
         } else {
@@ -167,7 +167,6 @@ function main() {
     const handel_switch_btn_div = document.querySelectorAll('.switch_btn_div');
     // 为 switch_btn_div 元素添加点击事件
     handel_switch_btn_div.forEach((item) => {
-
         item.addEventListener('click', function () {
             settings.is_prompt = !settings.is_prompt;
             render_ui(settings.is_prompt, settings.is_expand)
