@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Beautiful Coze| Coze 聊天面板美化 |免费GPT4
 // @namespace    http://tampermonkey.net/
-// @version      0.0.8
+// @version      0.0.9
 // @description  👍👍 |️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
