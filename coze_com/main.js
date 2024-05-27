@@ -2,7 +2,7 @@
 // @name         Beautiful Coze| Coze 聊天面板美化 |免费GPT4
 // @namespace    http://tampermonkey.net/
 // @version      0.0.8
-// @description  👍👍最新适配，超级好用||️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
+// @description  👍👍 |️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
 // @match        https://www.coze.com/*
@@ -25,6 +25,29 @@ const style = document.createElement('style');
 style.type = 'text/css';
 style.innerHTML = beautify_scrollbar_css;
 document.getElementsByTagName('head').item(0).appendChild(style);
+
+
+// Define the CSS styles as a string
+const styles = `
+            .chat_container_expand {
+                width: 100% !important;
+                max-width: 100% !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+            }
+            .chat_box_expand {
+                width: 900px;
+                max-width: 100%;
+            }           
+        `;
+
+// Create a new style element
+const styleSheet = document.createElement("style");
+styleSheet.type = "text/css";
+styleSheet.innerText = styles;
+// Append the style element to the head
+document.head.appendChild(styleSheet);
 
 
 // 设置一个变量显示 prompt 栏 或者 plugin 栏
@@ -88,69 +111,70 @@ function main() {
     const panel = document.querySelector(".sidesheet-container");
 
     const dev_container = panel.children[0]
+
     const prompt = dev_container.children[1].children[0];
     const skill = dev_container.children[1].children[1];
+    const chat_container = panel.children[1];
 
-    const chat = panel.children[1];
+    // 使用 flex 布局，右侧开发面板400px，左侧聊天内容铺满
+    panel.style.display = 'flex'
+    dev_container.style.width = '400px';
+    dev_container.style.minWidth='400px'
+    chat_container.style.flex = '1'
 
-
-    prompt.style.width = '25vw';
-    skill.style.width = '25vw';
-    chat.style.width = '75vw';
-
+    dev_container.children[1].style.display = 'flex'
+    prompt.style.width = '100%';
+    skill.style.width = '100%';
 
     const dd_header = dev_container.children[0]
     dd_header.children[0].style.display = 'none' // 隐藏title 标题
-    // 为开发栏上方插入一个切换按钮
 
+    // 为开发栏上方插入一个切换按钮
     const switch_btn = generate_div_element(switch_btn_svg_text, ['switch_btn_div', randomClassName]);
     switch_btn.style.marginLeft = '10px';
     dd_header.children[1].appendChild(switch_btn);
-
     prompt.children[0].style.height = '95%'
     skill.children[0].style.height = '95%'
-
 
     //  全屏按钮
     const expand_btn = generate_div_element(expend_btn_svg_text, ['expend_btn_div', randomClassName, 'expend_btn']);
     const un_expand_btn = generate_div_element(unexpand_btn_svg_text, [`unexpand_btn_div`, randomClassName, `expend_btn`]);
 
-    const chat_header = chat.children[0].children[0].children[0];
+    const chat_header = chat_container.children[0].children[0].children[0];
     chat_header.children[0].textContent = '';// 隐藏 chat_header 的第一个元素
     chat_header.appendChild(expand_btn);
     chat_header.appendChild(un_expand_btn);
 
     // 聊天界面容器
-    const chat_box = chat.children[0]
+    const chat_box = chat_container.children[0]
 
     function render_ui(is_prompt, is_expand) {
         if (is_expand) {// 处于展开状态
-
-            // 处于收缩状态
             top_header.style.display = 'none';// 隐藏 top_header
-            // 处于展开状态
-            // 展示 prompt
             expand_btn.style.display = 'none';
-            un_expand_btn.style.display = 'block';
 
-            dd_header.style.display = 'none';// 隐藏 dd_header
-            prompt.style.display = 'none'; // 将 prompt 和 plugin 的显示都设置为 none
-            skill.style.display = 'none';
-            // 将 chat 的宽度设置为 100%
-            chat.style.width = '100vw';
-            chat.style.backgroundColor = 'white';
-            console.log(chat_box)
-            chat_box.style.width = '50vw'
-            chat_box.style.marginLeft = '25vw'
+            un_expand_btn.style.display = 'block';
+            dev_container.style.display = 'none'
+
+            document.body.parentElement.style = ""
+            document.body.style = ""
+
+            chat_container.classList.add('chat_container_expand');
+            chat_box.classList.add('chat_box_expand')
         } else {
+            chat_container.classList.remove('chat_container_expand');
+            chat_box.classList.remove('chat_box_expand')
+
             top_header.style.display = '';// 显示 top_header, 不可为 block
             expand_btn.style.display = 'block';
-            un_expand_btn.style.display = 'none';
 
-            chat.style.width = '75vw' // 将 chat 的宽度设置为 75%
-            dd_header.style.display = ''; // 显示 dd_header
-            chat_box.style.width = '' // 将 chat_box 的宽度设置为 ''
-            chat_box.style.marginLeft = '' // 将 chat_box 的 marginLeft 设置为 ''
+            un_expand_btn.style.display = 'none';
+            dev_container.style.width = '400px';
+
+            dev_container.style.display = ''
+            chat_container.style.flex = '1'
+
+
             if (is_prompt) {
                 prompt.style.display = 'block';
                 skill.style.display = 'none';
