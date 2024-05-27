@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Beautiful Coze| Coze 聊天面板美化 |免费GPT4
 // @namespace    http://tampermonkey.net/
-// @version      0.0.9
+// @version      0.0.10
 // @description  👍👍 |️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
@@ -105,6 +105,7 @@ function generateRandomClassName() {
 
 const randomClassName = generateRandomClassName();
 
+
 function main() {
 
     const top_header = document.querySelector('.semi-spin-children').children[0];
@@ -119,7 +120,7 @@ function main() {
     // 使用 flex 布局，右侧开发面板400px，左侧聊天内容铺满
     panel.style.display = 'flex'
     dev_container.style.width = '400px';
-    dev_container.style.minWidth='400px'
+    dev_container.style.minWidth = '400px'
     chat_container.style.flex = '1'
 
     dev_container.children[1].style.display = 'flex'
@@ -161,6 +162,7 @@ function main() {
 
             chat_container.classList.add('chat_container_expand');
             chat_box.classList.add('chat_box_expand')
+
         } else {
             chat_container.classList.remove('chat_container_expand');
             chat_box.classList.remove('chat_box_expand')
@@ -204,6 +206,18 @@ function main() {
             render_ui(settings.is_prompt, settings.is_expand)
         });
     });
+
+
+    function checkWindowSize() {
+        if (window.innerWidth < 900) {
+            settings.is_expand = true
+            render_ui(settings.is_prompt, settings.is_expand)
+        } else {
+            settings.is_expand = false
+            render_ui(settings.is_prompt, settings.is_expand)
+        }
+    }
+    window.addEventListener('resize', checkWindowSize);
 }
 
 
