@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Beautiful Coze| Coze 聊天面板美化 |免费GPT4
 // @namespace    http://tampermonkey.net/
-// @version      0.0.10
+// @version      0.0.11
 // @description  👍👍 |️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
@@ -39,6 +39,9 @@ const styles = `
             .chat_box_expand {
                 width: 900px;
                 max-width: 100%;
+            }
+            .min_header{
+                height:32px !important;
             }           
         `;
 
@@ -47,7 +50,7 @@ const styleSheet = document.createElement("style");
 styleSheet.type = "text/css";
 styleSheet.innerText = styles;
 // Append the style element to the head
-document.head.appendChild(styleSheet);
+document.body.appendChild(styleSheet);
 
 
 // 设置一个变量显示 prompt 栏 或者 plugin 栏
@@ -110,12 +113,26 @@ function main() {
 
     const top_header = document.querySelector('.semi-spin-children').children[0];
     const panel = document.querySelector(".sidesheet-container");
-
     const dev_container = panel.children[0]
-
     const prompt = dev_container.children[1].children[0];
     const skill = dev_container.children[1].children[1];
     const chat_container = panel.children[1];
+    const dd_header = dev_container.children[0]
+    const chat_header = chat_container.children[0].children[0].children[0];
+    const chat_box = chat_container.children[0]
+
+    // 缩小顶部 Develop 和 Analytics 栏的高度
+    top_header.classList.add('min_header')
+    top_header.children[2].style.flexDirection = 'row'
+
+
+    dd_header.classList.add('min_header')
+    dd_header.children[0].style.display = 'none' // 隐藏title 标题
+
+    chat_header.classList.add('min_header')
+    chat_header.parentElement.classList.add('min_header')
+
+
 
     // 使用 flex 布局，右侧开发面板400px，左侧聊天内容铺满
     panel.style.display = 'flex'
@@ -127,27 +144,25 @@ function main() {
     prompt.style.width = '100%';
     skill.style.width = '100%';
 
-    const dd_header = dev_container.children[0]
-    dd_header.children[0].style.display = 'none' // 隐藏title 标题
 
+
+    const expand_btn = generate_div_element(expend_btn_svg_text, ['expend_btn_div', randomClassName, 'expend_btn']);
+    const un_expand_btn = generate_div_element(unexpand_btn_svg_text, [`unexpand_btn_div`, randomClassName, `expend_btn`]);
     // 为开发栏上方插入一个切换按钮
     const switch_btn = generate_div_element(switch_btn_svg_text, ['switch_btn_div', randomClassName]);
+
     switch_btn.style.marginLeft = '10px';
     dd_header.children[1].appendChild(switch_btn);
     prompt.children[0].style.height = '95%'
     skill.children[0].style.height = '95%'
 
-    //  全屏按钮
-    const expand_btn = generate_div_element(expend_btn_svg_text, ['expend_btn_div', randomClassName, 'expend_btn']);
-    const un_expand_btn = generate_div_element(unexpand_btn_svg_text, [`unexpand_btn_div`, randomClassName, `expend_btn`]);
 
-    const chat_header = chat_container.children[0].children[0].children[0];
     chat_header.children[0].textContent = '';// 隐藏 chat_header 的第一个元素
     chat_header.appendChild(expand_btn);
     chat_header.appendChild(un_expand_btn);
 
-    // 聊天界面容器
-    const chat_box = chat_container.children[0]
+
+
 
     function render_ui(is_prompt, is_expand) {
         if (is_expand) {// 处于展开状态
@@ -217,6 +232,7 @@ function main() {
             render_ui(settings.is_prompt, settings.is_expand)
         }
     }
+
     window.addEventListener('resize', checkWindowSize);
 }
 
@@ -235,13 +251,13 @@ const callback = function (mutationsList, observer) {    // 针对每一个变�
                     try {
                         main()
                     } catch (e) {
-                        console.log(e)
+                        // console.log(e)
                     }
                 } else {
-                    console.log('already insert')
+                    // console.log('already insert')
                 }
             } else {
-                console.log('waiting for sidesheet-container')
+                // console.log('waiting for sidesheet-container')
             }
         }
     }
