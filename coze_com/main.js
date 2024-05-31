@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Beautiful Coze| Coze 聊天面板美化 |免费GPT4
 // @namespace    http://tampermonkey.net/
-// @version      0.0.11
+// @version      0.0.12
 // @description  👍👍 |️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
@@ -42,7 +42,10 @@ const styles = `
             }
             .min_header{
                 height:32px !important;
-            }           
+            }  
+            body,html{
+                min-width:1px;
+            }        
         `;
 
 // Create a new style element
@@ -106,6 +109,10 @@ function generateRandomClassName() {
     return 'class-' + Math.random().toString(36).substr(2, 8);
 }
 
+function getChildNodesByPath(parent, path) {
+    return path.reduce((current, index) => current.children[index], parent);
+}
+
 const randomClassName = generateRandomClassName();
 
 
@@ -118,7 +125,7 @@ function main() {
     const skill = dev_container.children[1].children[1];
     const chat_container = panel.children[1];
     const dd_header = dev_container.children[0]
-    const chat_header = chat_container.children[0].children[0].children[0];
+    const chat_header = getChildNodesByPath(chat_container, [0, 0, 0]);
     const chat_box = chat_container.children[0]
 
     // 缩小顶部 Develop 和 Analytics 栏的高度
@@ -134,6 +141,8 @@ function main() {
 
 
 
+    getChildNodesByPath(chat_box, [2, 2, 0, 0, 1]).style.display = 'none';// 隐藏 最下面AI提示
+
     // 使用 flex 布局，右侧开发面板400px，左侧聊天内容铺满
     panel.style.display = 'flex'
     dev_container.style.width = '400px';
@@ -143,7 +152,6 @@ function main() {
     dev_container.children[1].style.display = 'flex'
     prompt.style.width = '100%';
     skill.style.width = '100%';
-
 
 
     const expand_btn = generate_div_element(expend_btn_svg_text, ['expend_btn_div', randomClassName, 'expend_btn']);
@@ -160,8 +168,6 @@ function main() {
     chat_header.children[0].textContent = '';// 隐藏 chat_header 的第一个元素
     chat_header.appendChild(expand_btn);
     chat_header.appendChild(un_expand_btn);
-
-
 
 
     function render_ui(is_prompt, is_expand) {
