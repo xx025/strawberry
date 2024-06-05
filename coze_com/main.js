@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Beautiful Coze| Coze 聊天面板美化 |免费GPT4
 // @namespace    http://tampermonkey.net/
-// @version      0.0.12
+// @version      0.0.13
 // @description  👍👍 |️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
@@ -37,8 +37,9 @@ const styles = `
                 align-items: center !important;
             }
             .chat_box_expand {
-                width: 900px;
-                max-width: 100%;
+              min-width: 70vw;
+              width: 1000px;
+              max-width: 100%;
             }
             .min_header{
                 height:32px !important;
@@ -140,7 +141,6 @@ function main() {
     chat_header.parentElement.classList.add('min_header')
 
 
-
     getChildNodesByPath(chat_box, [2, 2, 0, 0, 1]).style.display = 'none';// 隐藏 最下面AI提示
 
     // 使用 flex 布局，右侧开发面板400px，左侧聊天内容铺满
@@ -230,7 +230,7 @@ function main() {
 
 
     function checkWindowSize() {
-        if (window.innerWidth < 900) {
+        if (window.innerWidth < 1000) {
             settings.is_expand = true
             render_ui(settings.is_prompt, settings.is_expand)
         } else {
