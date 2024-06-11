@@ -12,6 +12,10 @@
 // ==/UserScript==
 
 
+
+
+const DISPLAY_DONATE = true; // 是否显示赞赏按钮
+
 // 几个按钮的 svg 文本
 const switch_btn_svg_text = '<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 17H4M4 17L8 13M4 17L8 21M4 7H20M20 7L16 3M20 7L16 11" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const expend_btn_svg_text = '<svg width="800px" height="800px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 8L21 3M21 3H16M21 3V8M8 8L3 3M3 3L3 8M3 3L8 3M8 16L3 21M3 21H8M3 21L3 16M16 16L21 21M21 21V16M21 21H16" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
@@ -156,8 +160,12 @@ function main() {
     // his btn
     const his_btn=document.querySelector(".semi-button.semi-button-primary.semi-button-light")
     const clonedBtn = his_btn.cloneNode(true);
-    clonedBtn.innerHTML="<a href='https://gist.github.com/xx025/63f9621e77d603c7ca7935e72a58f929' target='_blank' style='text-decoration: none;color: #ef1010' > ♥赞赏</a>"
-    his_btn.parentElement.insertBefore(clonedBtn,his_btn);
+    clonedBtn.innerHTML="<a href='https://gist.github.com/xx025/63f9621e77d603c7ca7935e72a58f929' target='_blank' style='text-decoration: none;color: rgba(239,16,16,0.6)' > ♥赞赏</a>"
+    if (DISPLAY_DONATE){
+
+        his_btn.parentElement.insertBefore(clonedBtn,his_btn);
+    }
+
 
     const expand_btn = generate_div_element(expend_btn_svg_text, ['expend_btn_div', randomClassName, 'expend_btn']);
     const un_expand_btn = generate_div_element(unexpand_btn_svg_text, [`unexpand_btn_div`, randomClassName, `expend_btn`]);
