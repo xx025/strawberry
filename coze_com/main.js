@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Beautiful Coze| Coze 聊天面板美化 |免费GPT4
 // @namespace    http://tampermonkey.net/
-// @version      0.0.13
-// @description  👍👍 |️Coze 聊天面板美化| 提示栏和插件栏的切换| 聊天面板全屏| Coze chat panel beautification| Switch between prompt bar and plugin bar| Full screen chat panel
+// @version      0.0.14
+// @description  👍👍| 自适应宽度 | 提示栏和插件栏的切换| 聊天面板全屏
 // @author       xx025
 // @homepage     https://github.com/xx025/strawberry
 // @match        https://www.coze.com/*
@@ -153,6 +153,11 @@ function main() {
     prompt.style.width = '100%';
     skill.style.width = '100%';
 
+    // his btn
+    const his_btn=document.querySelector(".semi-button.semi-button-primary.semi-button-light")
+    const clonedBtn = his_btn.cloneNode(true);
+    clonedBtn.innerHTML="<a href='https://gist.github.com/xx025/63f9621e77d603c7ca7935e72a58f929' target='_blank' style='text-decoration: none;color: #ef1010' > ♥赞赏</a>"
+    his_btn.parentElement.insertBefore(clonedBtn,his_btn);
 
     const expand_btn = generate_div_element(expend_btn_svg_text, ['expend_btn_div', randomClassName, 'expend_btn']);
     const un_expand_btn = generate_div_element(unexpand_btn_svg_text, [`unexpand_btn_div`, randomClassName, `expend_btn`]);
