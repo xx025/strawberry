@@ -24,5 +24,5 @@ coze，让你免费白嫖GPT4 [Coze官网](https://coze.com/)
 
 **演示**
 
-![动画](https://i.postimg.cc/G3nrtL81/2.webp?dl=1)
+![image.gif](https://i.postimg.cc/XJCC8j4b/image.gif)
 
